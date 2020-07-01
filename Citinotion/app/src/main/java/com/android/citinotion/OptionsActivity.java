@@ -1,7 +1,9 @@
 package com.android.citinotion;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,11 +12,14 @@ import android.widget.TextView;
 import com.android.citinotion.Model.AboutUs;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class OptionsActivity extends AppCompatActivity {
 
     TextView logout;
     TextView aboutUs;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +27,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Options");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Options");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

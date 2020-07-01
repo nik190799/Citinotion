@@ -65,7 +65,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="20dp"
-            android:hint="Bio"
+            android:hint="Area"
             android:textSize="16sp"
             app:met_floatingLabel="normal" />
 

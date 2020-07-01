@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     Button login;
     TextView txt_signup;
-
     FirebaseAuth auth;
 
     @Override
@@ -46,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        txt_signup.setOnClickListener(new View.OnClickListener() {
+        txt_signup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
@@ -81,14 +80,15 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 pd.dismiss();
-                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                startActivity(intent);
+                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+
                                                 finish();
                                             }
 
                                             @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            public void onCancelled(@NonNull DatabaseError databaseError){
                                                 pd.dismiss();
                                             }
                                         });

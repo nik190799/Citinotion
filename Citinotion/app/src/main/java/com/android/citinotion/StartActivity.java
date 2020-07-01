@@ -11,9 +11,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class StartActivity extends AppCompatActivity {
 
-    Button login, register,mayorlogin;
+    Button login, register,mayorlogin,mayorregister;
 
     FirebaseUser firebaseUser;
+
 
     @Override
     protected void onStart() {
@@ -30,6 +31,11 @@ public class StartActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
@@ -37,6 +43,7 @@ public class StartActivity extends AppCompatActivity {
         mayorlogin = findViewById(R.id.m_login_btn);
         login = findViewById(R.id.login);
         register = findViewById(R.id.register);
+        mayorregister = findViewById(R.id.mayor_register);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +64,12 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(StartActivity.this, MayorLoginActivity.class));
+            }
+        });
+        mayorregister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(StartActivity.this, MayorRegisterActivity.class));
             }
         });
 

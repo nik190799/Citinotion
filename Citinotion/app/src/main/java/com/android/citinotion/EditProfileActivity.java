@@ -3,9 +3,12 @@ package com.android.citinotion;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.citinotion.Fragments.ProfileFragment;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,23 +39,36 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
+import java.util.Objects;
+
+import static java.security.AccessController.getContext;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    ImageView close, image_profile;
+    ImageView  image_profile;
     TextView save, tv_change;
     MaterialEditText fullname, username, bio;
 
-    FirebaseUser firebaseUser;
+    StorageReference storageRef1;
+    FirebaseUser firebaseUser1;
 
     private Uri mImageUri;
-    private StorageTask uploadTask;
-    StorageReference storageRef;
+
+
+    DatabaseReference reference;
+    FirebaseUser firebaseUser;
+
+   String profileid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        SharedPreferences prefs = this.getSharedPreferences("PREFS", MODE_PRIVATE);
+        profileid = prefs.getString("profileid", "none");
 
        //close = findViewById(R.id.close);
         image_profile = findViewById(R.id.image_profile);
@@ -61,14 +78,15 @@ public class EditProfileActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         bio = findViewById(R.id.bio);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        storageRef = FirebaseStorage.getInstance().getReference("uploads");
+        firebaseUser1 = FirebaseAuth.getInstance().getCurrentUser();
+        storageRef1 = FirebaseStorage.getInstance().getReference("uploads");
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser1.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                assert user != null;
                 fullname.setText(user.getFullname());
                 username.setText(user.getUsername());
                 bio.setText(user.getBio());
@@ -89,11 +107,14 @@ public class EditProfileActivity extends AppCompatActivity {
 //        });
 
         save.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                updateProfile(fullname.getText().toString(),
-                        username.getText().toString(),
-                        bio.getText().toString());
+                updateProfile(Objects.requireNonNull(fullname.getText()).toString(),
+                        Objects.requireNonNull(username.getText()).toString(),
+                        Objects.requireNonNull(bio.getText()).toString());
+                userInfo();
+
             }
         });
 
@@ -117,10 +138,32 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
+    private void userInfo(){
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(profileid);
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (getContext() == null){
+                    return;
+                }
+                User user = dataSnapshot.getValue(User.class);
+                assert user != null;
+                if(user.getPost().equals("Mayor")){
+                    startActivity(new Intent(EditProfileActivity.this, MayorActivity.class));
 
+                }else if(user.getPost().equals("Citizen")){
+                    startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void updateProfile(String fullname, String username, String bio){
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser1.getUid());
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("fullname", fullname);
@@ -143,10 +186,10 @@ public class EditProfileActivity extends AppCompatActivity {
         pd.setMessage("Uploading");
         pd.show();
         if (mImageUri != null){
-            final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
+            final StorageReference fileReference = storageRef1.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
-            uploadTask = fileReference.putFile(mImageUri);
+            StorageTask uploadTask = fileReference.putFile(mImageUri);
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -162,7 +205,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         String miUrlOk = downloadUri.toString();
 
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser1.getUid());
                         HashMap<String, Object> map1 = new HashMap<>();
                         map1.put("imageurl", ""+miUrlOk);
                         reference.updateChildren(map1);

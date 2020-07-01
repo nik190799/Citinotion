@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +22,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.citinotion.EditProfileActivity;
+import com.android.citinotion.MainActivity;
+import com.android.citinotion.StartActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +46,7 @@ import com.android.citinotion.R;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -84,6 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         isSaved(post.getPostid(), holder.save);
         nrLikes(holder.likes, post.getPostid());
         getCommetns(post.getPostid(), holder.comments);
+        //getAdd(post.getPostid(),holder.postCurrentAddress);
 
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +198,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             }
         });
 
+        holder.postCurrentAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,8 +227,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                                                 if (task.isSuccessful()){
                                                     deleteNotifications(id, firebaseUser.getUid());
                                                 }
+                                                Intent intent = new Intent(mContext, MainActivity.class);
+                                                mContext.startActivity(intent);
+
+
                                             }
                                         });
+
                                 return true;
                             case R.id.report:
                                 Toast.makeText(mContext, "Reported clicked!", Toast.LENGTH_SHORT).show();
@@ -240,7 +261,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image_profile, post_image, like, comment, save, more;
-        public TextView username, likes, publisher, description, comments;
+        public TextView username, likes, publisher, description, comments,postCurrentAddress;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -256,6 +277,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             description = itemView.findViewById(R.id.description);
             comments = itemView.findViewById(R.id.comments);
             more = itemView.findViewById(R.id.more);
+            postCurrentAddress = itemView.findViewById(R.id.post_current_address);
         }
     }
 
@@ -301,7 +323,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                likes.setText(dataSnapshot.getChildrenCount()+" likes");
+                likes.setText(dataSnapshot.getChildrenCount()+" Agree");
             }
 
             @Override
@@ -317,7 +339,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                comments.setText("View All "+dataSnapshot.getChildrenCount()+" Comments");
+                comments.setText("View All "+dataSnapshot.getChildrenCount()+" Reviews");
             }
 
             @Override
@@ -336,8 +358,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 Glide.with(mContext).load(user.getImageurl()).into(image_profile);
-                username.setText(user.getUsername());
-                publisher.setText(user.getUsername());
+                username.setText(user.getFullname());
+                publisher.setText(user.getFullname());
             }
 
             @Override
@@ -371,6 +393,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             }
         });
     }
+//    private void getAdd(String postid,final TextView postCurrentAddress){
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts")
+//                .child(postid);
+//        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                postCurrentAddress.setText(Objects.requireNonNull(dataSnapshot.getValue(Post.class)).getAddress());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     private void isSaved(final String postid, final ImageView imageView){
 

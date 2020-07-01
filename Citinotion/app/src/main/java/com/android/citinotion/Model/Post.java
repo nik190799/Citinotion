@@ -1,16 +1,19 @@
 package com.android.citinotion.Model;
 
+import android.widget.TextView;
+
 public class Post {
     private String postid;
     private String postimage;
     private String description;
-    private String publisher;
+    private String publisher,address;
 
-    public Post(String postid, String postimage, String description, String publisher) {
+    public Post(String postid, String postimage, String description, String publisher ,String postaddress) {
         this.postid = postid;
         this.postimage = postimage;
         this.description = description;
         this.publisher = publisher;
+       // this.address = postaddress;
     }
 
     public Post() {
@@ -47,4 +50,12 @@ public class Post {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
+
+
+//    public String getAddress(){return address ;}
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+
+
 }

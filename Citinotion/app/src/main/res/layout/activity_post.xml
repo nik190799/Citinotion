@@ -62,6 +62,23 @@
             android:src="@mipmap/ic_launcher"
             android:id="@+id/image_added"/>
 
+        <TextView
+            android:id="@+id/post_address_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="pin"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/pic_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Current Address"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

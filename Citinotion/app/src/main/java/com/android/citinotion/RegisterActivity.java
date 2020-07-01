@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.citinotion.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+
 
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
@@ -84,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             FirebaseUser firebaseUser = auth.getCurrentUser();
+                            assert firebaseUser != null;
                             String userID = firebaseUser.getUid();
 
                             reference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
@@ -93,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                             map.put("fullname", fullname);
                             map.put("imageurl", "https://firebasestorage.googleapis.com/v0/b/citinotion-fcbef.appspot.com/o/placeholder.png?alt=media&token=b09b809d-a5f8-499b-9563-5252262e9a49");
                             map.put("bio", "");
+                            map.put("Post","Citizen");
                             total_users++;
 
                             reference.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -26,17 +26,12 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+
+
+
     private PostAdapter postAdapter;
     private List<Post> postList;
-
-//    private RecyclerView recyclerView_story;
-//    private StoryAdapter storyAdapter;
-//    private List<Story> storyList;
-
-    private List<String> followingList;
-
     ProgressBar progress_circular;
-
 
 
     @Override
@@ -55,7 +50,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(postAdapter);
 
 
-
         progress_circular = view.findViewById(R.id.progress_circular);
 
         readPosts();
@@ -63,41 +57,17 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-//    private void checkFollowing(){
-//        followingList = new ArrayList<>();
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow")
-//                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                .child("following");
-//
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                followingList.clear();
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                    followingList.add(snapshot.getKey());
-//                }
-//
-//                readPosts();
-//               // readStory();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
-    private void readPosts(){
+    private void readPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 postList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                            postList.add(post);
+                    postList.add(post);
 
 
                 }
@@ -113,36 +83,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-//    private void readStory(){
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story");
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                long timecurrent = System.currentTimeMillis();
-//                storyList.clear();
-//                storyList.add(new Story("", 0, 0, "",
-//                        FirebaseAuth.getInstance().getCurrentUser().getUid()));
-//                for (String id : followingList) {
-//                    int countStory = 0;
-//                    Story story = null;
-//                    for (DataSnapshot snapshot : dataSnapshot.child(id).getChildren()) {
-//                        story = snapshot.getValue(Story.class);
-//                        if (timecurrent > story.getTimestart() && timecurrent < story.getTimeend()) {
-//                            countStory++;
-//                        }
-//                    }
-//                    if (countStory > 0){
-//                        storyList.add(story);
-//                    }
-//                }
-//
-//                storyAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-    //}
 }
+
+

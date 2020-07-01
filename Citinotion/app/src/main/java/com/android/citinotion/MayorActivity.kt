@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.android.citinotion.Fragments.MayorInfo
 import com.android.citinotion.Fragments.MayorPost
+import com.android.citinotion.Fragments.MayorProfileFragment
+import com.android.citinotion.Fragments.MayorsPost
 import kotlinx.android.synthetic.main.activity_mayor.*
 
 class MayorActivity : AppCompatActivity() {
@@ -35,7 +37,7 @@ class MayorActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                replaceFragment(MayorInfo())
+               replaceFragment(MayorProfileFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }

@@ -27,6 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:text="Citinotion"
                     android:textColor="#ffff"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -105,12 +106,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
                             android:orientation="vertical">
 
                             <TextView
@@ -119,13 +123,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textSize="18sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="posts" />
+                                android:text="posts"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -134,9 +139,8 @@
                     <Button
                         android:id="@+id/edit_profile"
                         android:layout_width="130dp"
-                        android:layout_height="20dp"
+                        android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="16dp"
                         android:layout_marginRight="10dp"
                         android:background="@color/colorBlack"
                         android:text="EDIT PROFILE"
@@ -148,46 +152,54 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/last_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/mid_bar"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="-5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="-5dp"
-                android:id="@+id/last_bar"
                 android:background="@drawable/button_black"
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:id="@+id/my_fotos"
-                    android:src="@drawable/ic_grid"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:scaleX=".7"
+                    android:scaleY=".7"
+                    android:src="@drawable/ic_grid33" />
 
                 <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:id="@+id/saved_fotos"
-                    android:src="@drawable/ic_save"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/buttonBarButtonStyle"/>
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:scaleX=".7"
+                    android:scaleY=".7"
+                    android:src="@drawable/ic_save33" />
 
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/last_bar"
-                android:id="@+id/recycler_view"/>
+                android:layout_below="@id/last_bar" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/last_bar"
-                android:visibility="gone"
-                android:id="@+id/recycler_view_save"/>
+                android:visibility="gone" />
 
         </LinearLayout>
 
