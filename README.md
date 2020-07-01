@@ -9,7 +9,7 @@
   ~To obtain direct communication between mayor and the citizens.</br></br>
 
 ### Languages:</br>
-  JAVA, Kotlin</br></br>
+  Java, Kotlin</br></br>
   
 ### Implementation:</br>
   ~Online complaint about undeveloped areas and unprovided services from Government.</br>
